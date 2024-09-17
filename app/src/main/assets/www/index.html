@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WebView Interaction</title>
+</head>
+<body>
+<div id="f" onclick="a()">Hello world!</div>
+
+<script>
+    // Функция, которая вызывается при нажатии на элемент
+    function a() {
+        // Вызываем Java метод через интерфейс android
+        android.callFromJS();
+    }
+
+    // Функция, которая вызывается из Java для изменения текста
+    function changeText(text) {
+        document.getElementById("f").innerHTML = text;
+    }
+</script>
+</body>
+</html>

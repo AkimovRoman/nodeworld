@@ -1,4 +1,4 @@
-package com.note.world;
+package com.note.noteworldproject;
 
 import org.junit.Test;
 
