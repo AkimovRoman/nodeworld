@@ -2,21 +2,89 @@
 <html>
 <head>
     <title>WebView Interaction</title>
+    <link rel="stylesheet" href="css/style.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 </head>
 <body>
-<div id="f" onclick="a()">Hello world!</div>
+<div class="block" id="main-block">
+	<div class="top-container">
+		<div class="title">NoteWord</div>
+	</div>
 
-<script>
-    // Функция, которая вызывается при нажатии на элемент
-    function a() {
-        // Вызываем Java метод через интерфейс android
-        android.callFromJS();
-    }
+	<div class="main-button-container">
+		<div class="button">
+			<img class="button-img" src="img/addFile.png" onclick="show(2)">
+		</div>
+		<div class="button">
+			<img class="button-img" src="img/downloadFile.png" onclick="show(3)">
+		</div>
+		<div class="button">
+			<img class="button-img" src="img/uploadFile.png" onclick="uploadFile()">
+		</div>
 
-    // Функция, которая вызывается из Java для изменения текста
-    function changeText(text) {
-        document.getElementById("f").innerHTML = text;
-    }
-</script>
+
+	</div>
+
+	<div class="line"></div>
+
+	<div class="files-container" id="files-container">
+
+	</div>
+</div>
+
+
+
+<div class="block" id="select-block">
+	<div class="top-container">
+		<img class="button-img-back" src="img/back.png" onclick="show(0)">
+		<div class="title">NoteWord</div>
+	</div>
+
+	<div class="files-container" id="files-container-select">
+	</div>
+</div>
+
+<div class="block" id="name-block">
+	<div class="top-container">
+		<img class="button-img-back" src="img/back.png" onclick="show(0)">
+		<div class="title">NoteWord</div>
+	</div>
+
+	<div class="name-container">
+		<input class="name-input" id="name-input" placeholder="Введите название">
+		<div class="name-button" onclick="createFile()">СОЗДАТЬ</div>
+	</div>
+</div>
+
+<div class="block" id="id-select-block">
+	<div class="top-container">
+		<img class="button-img-back" src="img/back.png" onclick="show(0)">
+		<div class="title">NoteWord</div>
+	</div>
+
+	<div class="name-container">
+		<input class="name-input" id="id-input" placeholder="Введите ID">
+		<div class="name-button" onclick="downloadFile()">ЗАГРУЗИТЬ</div>
+	</div>
+</div>
+
+<div class="block" id="file-block">
+	<div class="top-container">
+		<img class="button-img" src="img/settings.png" onclick="settings()">
+		<div class="vertical-line"></div>
+		<img class="button-img" src="img/text.png" onclick="changeInstrument(0)">
+		<img class="button-img" src="img/figure.png" onclick="changeInstrument(1)">
+		<img class="button-img" src="img/pen.png" onclick="changeInstrument(2)">
+		<div class="vertical-line"></div>
+		<img class="button-img" src="img/save.png" onclick="save()">
+	</div>
+	<div class="workzone">
+		<canvas class="list"></canvas>
+		<canvas class="list"></canvas>
+	</div>
+</div>
+
+<script src="js/kernel.js"></script>
 </body>
 </html>
