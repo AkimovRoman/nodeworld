@@ -1,6 +1,4 @@
-body{
-	margin: 0;
-}
+html, body {margin: 0; height: 100%; overflow: hidden}
 
 @font-face {
     font-family: 'main'; /*a name to be used later*/
@@ -21,10 +19,10 @@ body{
 .title{
 	display: flex;
 	font-family: main;
-	font-size: 50px;
+	font-size: 30px;
 	margin: 30px;
 	color:white;
-	letter-spacing: 8px; 
+	letter-spacing: 6px;
 }
 
 
@@ -42,14 +40,14 @@ body{
 .button{
 	display: flex;
 	background: #477BFF;
-	border-radius: 30px;
-	margin: 30px;
+	border-radius: 15px;
+	margin: 15px;
 }
 
 .button-img{
-	width: 100px;
-	height: 100px;
-	margin: 20px;
+	width: 40px;
+	height: 40px;
+	margin: 15px;
 }
 
 
@@ -62,7 +60,7 @@ body{
 	height: 10px;
 	margin-left: auto;
 	margin-right: auto;
-	border-radius: 30px;
+	border-radius: 10px;
 }
 
 
@@ -70,21 +68,21 @@ body{
 	display: flex;
 	justify-content: center;
 	flex-flow: column;
-	margin: 30px 80px 0px 80px;
+	margin: 30px 20px 0px 20px;
 }
 
 .file{
 	display: flex;
-	margin: 10px;
+	margin: 0px;
 	align-items: center;
 }
 
 
 .file-img{
-	width: 100px;
-	height: 100px;
-	margin: 10px;
-	border-radius: 30px;
+	width: 45px;
+	height: 45px;
+	margin: 15px;
+	border-radius: 15px;
 	background: #477BFF;
 	padding: 10px;
 }
@@ -95,7 +93,7 @@ body{
 .file-title{
 	display: flex;
 	font-family: arial;
-	font-size: 30px;
+	font-size: 15px;
 	margin: 30px;
 	color:grey;
 	font-weight: bold;
@@ -131,8 +129,8 @@ body{
 
 .button-img-back{
 	left: 10px;
-	width: 50px;
-	height: 50px;
+	width: 40px;
+	height: 40px;
 }
 
 
@@ -144,11 +142,11 @@ body{
 	align-content: center;
 	align-items: center;
 	justify-content: center;
-	width: 700px;
-	height: 800px;
+	width: 290px;
+	height: 350px;
 	margin: auto;
-	margin-top: 80px;
-	border-radius: 30px;
+	margin-top:120px;
+	border-radius: 15px;
 	flex-flow: column;
 }
 
@@ -156,12 +154,16 @@ body{
 .name-input{
 	display: flex;
 	background: white;
-	border-radius: 20px;
-	width: 500px;
-	height: 50px;
-	padding: 20px;
-	font-size: 40px;
+	border-radius: 10px;
+	width: 180px;
+	height: 40px;
+	padding: 10px;
+	font-size: 15px;
 	color:grey;
+	border: 0;
+	font-family: arial;
+	font-weight: bold;
+	margin: 20px;
 }
 
 
@@ -173,11 +175,11 @@ body{
 	display: flex;
 	background: white;
 	color:#477BFF;
-	width: 540px;
-	height: 90px;
-	font-size: 40px;
-	margin: 80px;
-	border-radius: 20px;
+	width: 200px;
+	height: 60px;
+	font-size: 15px;
+	margin: 20px;
+	border-radius: 10px;
 
 	align-content: center;
 	align-items: center;

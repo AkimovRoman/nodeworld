@@ -31,8 +31,6 @@ function getFiles(files_temp) {
     files = files_temp
 }
 
-getFiles(["asdfas", "asdas"])
-
 
 function createFile() {
     var name = document.getElementById("name-input")
@@ -66,7 +64,6 @@ function show(t) {
 
 
 
-openFile("")
 
 function openFile(json){
     if(json == ""){
@@ -77,6 +74,8 @@ function openFile(json){
 }
 
 
+
+getFiles(["asdfas", "asdas"])
 
 
 
