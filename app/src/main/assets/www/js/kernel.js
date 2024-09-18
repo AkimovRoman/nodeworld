@@ -14,7 +14,7 @@ function getFiles(files_temp) {
     for (var i = 0; i < files_temp.length; i++) {
         inner += '\
         <div class="file">\
-            <img class="file-img" src="img/file.png" onclick="android.openFile('+i+')">\
+            <img class="file-img" src="img/file.png" onclick="openFile()">\
             <div class="file-title">'+files_temp[i]+'</div>\
         </div>'
 
@@ -75,7 +75,7 @@ function openFile(json){
 
 
 
-getFiles(["asdfas", "asdas"])
+getFiles(["file1", "file22", "file232", "file212"])
 
 
 
