@@ -93,7 +93,7 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 .file-title{
 	display: flex;
 	font-family: arial;
-	font-size: 15px;
+	font-size: 18px;
 	margin: 30px;
 	color:grey;
 	font-weight: bold;
@@ -159,6 +159,7 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 	height: 40px;
 	padding: 10px;
 	font-size: 15px;
+	letter-spacing: 5px;
 	color:grey;
 	border: 0;
 	font-family: arial;
@@ -170,7 +171,7 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 
 .name-button{
 	font-family: arial;
-	letter-spacing: 5px; 
+	letter-spacing: 2px;
 	font-weight: bold;
 	display: flex;
 	background: white;
