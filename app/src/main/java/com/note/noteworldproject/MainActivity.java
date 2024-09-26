@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         web.loadUrl("file:///android_asset/www/index.html");
 
         // Связываем интерфейс с JavaScript
-        web.addJavascriptInterface(new testScript(this, web), "android");
+        web.addJavascriptInterface(new FileManager(this, web), "android");
 
         // Обрабатываем системные окна
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {

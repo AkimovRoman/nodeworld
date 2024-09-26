@@ -1,6 +1,7 @@
 var files = []
 
-function getFiles(files_temp) {
+function getFiles(files_temp){
+
     var file_container = document.getElementById("files-container");
     var file_container_select = document.getElementById("files-container-select");
 
@@ -12,17 +13,9 @@ function getFiles(files_temp) {
     }
 
     for (var i = 0; i < files_temp.length; i++) {
-        inner += '\
-        <div class="file">\
-            <img class="file-img" src="img/file.png" onclick="openFile()">\
-            <div class="file-title">'+files_temp[i]+'</div>\
-        </div>'
+        inner += '<div class="file"><img class="file-img" src="img/file.png" onclick="openFile()"><div class="file-title">'+files_temp[i]+'</div></div>'
 
-        inner2 += '\
-        <div class="file">\
-            <img class="file-img" src="img/checkFile.png" onclick="android.chooseFile('+i+')">\
-            <div class="file-title">'+files_temp[i]+'</div>\
-        </div>'
+        inner2 += '<div class="file"><img class="file-img" src="img/checkFile.png" onclick="android.chooseFile('+i+')"><div class="file-title">'+files_temp[i]+'</div></div>'
     }
 
     file_container.innerHTML = inner
@@ -33,17 +26,19 @@ function getFiles(files_temp) {
 
 
 function createFile() {
-    var name = document.getElementById("name-input")
+    var name = document.getElementById("name-input").value
     if(name != ""){
-        android.createFile(name)
+        android.createJsonFile(name)
+        show(0)
     }
 }
 
 
 function downloadFile() {
-    var id = document.getElementById("id-input")
+    var id = document.getElementById("id-input").value
     if(id != ""){
         android.downloadFile(id)
+        show(0)
     }
 }
 
@@ -60,9 +55,11 @@ function show(t) {
         elems[i].style.display = "none"
     }
     elems[t].style.display = "block"
+
+    if(t == 0) android.getAllJsonFiles()
 }
 
-
+android.getAllJsonFiles()
 
 
 function openFile(json){
@@ -73,9 +70,6 @@ function openFile(json){
     show(4)
 }
 
-
-
-getFiles(["file1", "file22", "file232", "file212"])
 
 
 
