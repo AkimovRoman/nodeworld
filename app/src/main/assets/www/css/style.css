@@ -1,4 +1,5 @@
-html, body {margin: 0; height: 100%; overflow: hidden}
+html, body {margin: 0; height: 100%; overflow-x:hidden;}
+
 
 @font-face {
     font-family: 'main'; /*a name to be used later*/
@@ -66,10 +67,38 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 
 .files-container{
 	display: flex;
-	justify-content: center;
 	flex-flow: column;
 	margin: 30px 20px 0px 20px;
+	height: 450px;
+	overflow-y: scroll;
 }
+
+
+
+
+.files-container::-webkit-scrollbar {
+  width: 5px; /* Ширина всего элемента навигации */
+}
+
+.files-container::-webkit-scrollbar-track {
+  background: white; /* Цвет дорожки */
+}
+
+.files-container::-webkit-scrollbar-thumb {
+  background-color: #477BFF;
+  border-radius: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 .file{
 	display: flex;
@@ -94,7 +123,7 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 	display: flex;
 	font-family: arial;
 	font-size: 18px;
-	margin: 30px;
+	margin: 10px;
 	color:grey;
 	font-weight: bold;
 	letter-spacing: 5px; 
@@ -150,6 +179,76 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 	flex-flow: column;
 }
 
+.settings-container{
+    display: none;
+	flex-wrap: nowrap;
+	background: #477BFF;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+	width: 360px;
+	height: 360px;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	flex-flow: column;
+
+}
+
+.exit-container{
+    display: none;
+	flex-wrap: nowrap;
+	background: #477BFF;
+	align-content: center;
+	align-items: center;
+	justify-content: center;
+	width: 360px;
+	height: 360px;
+	margin: auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	flex-flow: column;
+
+}
+
+
+.button-settings{
+	display: flex;
+    background: white;
+    color:grey;
+    padding: 10px;
+	border-radius: 10px;
+	align-content: center;
+	align-items: center;
+	margin: 10px;
+	justify-content: center;
+	width: 250px;
+	height: 35px;
+}
+
+.button-red{
+    margin-top:40px;
+    background: red;
+    color:white;
+}
+
+
+.name-file-input{
+    display: flex;
+	background: white;
+	border-radius: 10px;
+	width: 250px;
+	height: 40px;
+	padding: 10px;
+	font-size: 15px;
+	letter-spacing: 3px;
+	color:grey;
+	border: 0;
+	font-family: arial;
+	font-weight: bold;
+	margin: 10px;
+}
+
 
 .name-input{
 	display: flex;
@@ -159,7 +258,7 @@ html, body {margin: 0; height: 100%; overflow: hidden}
 	height: 40px;
 	padding: 10px;
 	font-size: 15px;
-	letter-spacing: 5px;
+	letter-spacing: 3px;
 	color:grey;
 	border: 0;
 	font-family: arial;

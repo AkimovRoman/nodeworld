@@ -9,7 +9,7 @@
 <body>
 <div class="block" id="main-block">
 	<div class="top-container">
-		<div class="title">NoteWord</div>
+		<div class="title">NoteWorld</div>
 	</div>
 
 	<div class="main-button-container">
@@ -26,9 +26,9 @@
 
 	</div>
 
-	<div class="line"></div>
+	<div class = "line"></div>
 
-	<div class="files-container" id="files-container">
+	<div class = "files-container" id = "files-container">
 
 	</div>
 </div>
@@ -38,7 +38,7 @@
 <div class="block" id="select-block">
 	<div class="top-container">
 		<img class="button-img-back" src="img/back.png" onclick="show(0)">
-		<div class="title">NoteWord</div>
+		<div class="title">NoteWorld</div>
 	</div>
 
 	<div class="files-container" id="files-container-select">
@@ -60,7 +60,7 @@
 <div class="block" id="id-select-block">
 	<div class="top-container">
 		<img class="button-img-back" src="img/back.png" onclick="show(0)">
-		<div class="title">NoteWord</div>
+		<div class="title">NoteWorld</div>
 	</div>
 
 	<div class="name-container">
@@ -71,13 +71,22 @@
 
 <div class="block" id="file-block">
 	<div class="top-container">
-		<img class="button-img" src="img/back.png" onclick="save()">
+		<img class="button-img" src="img/back.png" onclick="saveWindow()">
 		<div class="vertical-line"></div>
 		<img class="button-img" src="img/text.png" onclick="changeInstrument(0)">
 		<img class="button-img" src="img/figure.png" onclick="changeInstrument(1)">
 		<img class="button-img" src="img/pen.png" onclick="changeInstrument(2)">
 		<div class="vertical-line"></div>
 		<img class="button-img" src="img/settings.png" onclick="settings()">
+	</div>
+	<div class="exit-container" id="exit">
+		<div class="button-settings" onclick="save(true)">Сохранять</div>
+		<div class="button-settings button-red" onclick="save(false)">Не сохранять</div>
+	</div>
+	<div class="settings-container" id="settings">
+		<input class="name-file-input" id="name-file-input" placeholder="Введите новое название">
+		<div class="button-settings" onclick="changeTitle()">Изменить название</div>
+		<div class="button-settings button-red" onclick="deleteFile()">Удалить файл</div>
 	</div>
 	<div class="workzone">
 		<canvas class="list"></canvas>
