@@ -81,12 +81,14 @@
 	</div>
 	<div class="exit-container" id="exit">
 		<div class="button-settings" onclick="save(true)">Сохранять</div>
-		<div class="button-settings button-red" onclick="save(false)">Не сохранять</div>
+		<div class="button-delete" onclick="save(false)">Не сохранять</div>
 	</div>
 	<div class="settings-container" id="settings">
-		<input class="name-file-input" id="name-file-input" placeholder="Введите новое название">
-		<div class="button-settings" onclick="changeTitle()">Изменить название</div>
-		<div class="button-settings button-red" onclick="deleteFile()">Удалить файл</div>
+		<div class="change-title-container">
+			<input class="name-file-input" id="name-file-input" placeholder="Введите новое название">
+			<img class="button-img enter-button" src="img/enter.png" onclick="changeTitle()">
+		</div>
+		<div class="button-delete" onclick="deleteFile()">Удалить файл</div>
 	</div>
 	<div class="workzone">
 		<canvas class="list"></canvas>

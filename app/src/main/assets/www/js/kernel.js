@@ -86,6 +86,7 @@ function changeTitle(){
     var new_title = document.getElementById("name-file-input").value
     if(new_title != ""){
         android.changeTitle(title, new_title)
+        title = new_title + ".nw"
         settings()
     }
 }
