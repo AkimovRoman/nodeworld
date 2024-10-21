@@ -2,74 +2,308 @@
 <html>
 <head>
     <title>WebView Interaction</title>
-    <link rel="stylesheet" href="css/style.css">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style>
+		html, body {margin: 0; height: 100%; overflow-x:hidden;}
+		@font-face {
+			font-family: 'main';
+			src: url('fonts/InriaSans.ttf');
+		}
+		.block{
+			display:block;
+			width:100%;
+			height:100%;
+			overflow: hidden;
+		}
+		.top-container{
+			display: flex;
+			flex-wrap: nowrap;
+			background: #477BFF;
+			align-content: center;
+			align-items: center;
+			justify-content: center;
+		}
+		.title{
+			display: flex;
+			font-family: main;
+			font-size: 30px;
+			margin: 30px;
+			color:white;
+			letter-spacing: 6px;
+		}
+		.main-button-container{
+			display: flex;
+			flex-wrap: nowrap;
 
+			justify-content: center;
+			margin: 30px;
+		}
+		.button{
+			display: flex;
+			background: #477BFF;
+			border-radius: 15px;
+			margin: 15px;
+		}
+		.button-img{
+			width: 40px;
+			height: 40px;
+			margin: 15px;
+		}
+		.line{
+			display: flex;
+			background: #477BFF;
+			width: 80%;
+			height: 10px;
+			margin-left: auto;
+			margin-right: auto;
+			border-radius: 10px;
+		}
+		.files-container{
+			display: flex;
+			flex-flow: column;
+			margin: 30px 20px 0px 20px;
+			height: 450px;
+			overflow-y: scroll;
+		}
+		.files-container::-webkit-scrollbar {
+		  width: 5px;
+		}
+		.files-container::-webkit-scrollbar-track {
+		  background: white;
+		}
+		.files-container::-webkit-scrollbar-thumb {
+		  background-color: #477BFF;
+		  border-radius: 20px;
+		}
+		.file{
+			display: flex;
+			margin: 0px;
+			align-items: center;
+		}
+		.file-img{
+			width: 45px;
+			height: 45px;
+			margin: 15px;
+			border-radius: 15px;
+			background: #477BFF;
+			padding: 10px;
+		}
+		.file-title{
+			display: flex;
+			font-family: arial;
+			font-size: 18px;
+			margin: 10px;
+			color:grey;
+			font-weight: bold;
+			letter-spacing: 5px;
+		}
+		.no-files{
+			display: flex;
+			font-family: arial;
+			font-size: 30px;
+			margin: 30px;
+			color:grey;
+			font-weight: bold;
+			letter-spacing: 5px;
+			text-align: center;
+
+			margin-left: auto;
+			margin-right: auto;
+		}
+		.block{
+			display: none;
+		}
+		#main-block{
+			display: block;
+		}
+		.button-img-back{
+			left: 10px;
+			width: 40px;
+			height: 40px;
+		}
+		.name-container{
+			display: flex;
+			flex-wrap: nowrap;
+			background: #477BFF;
+			align-content: center;
+			align-items: center;
+			justify-content: center;
+			width: 290px;
+			height: 350px;
+			margin: auto;
+			margin-top:120px;
+			border-radius: 15px;
+			flex-flow: column;
+		}
+		.settings-container{
+			display: none;
+			background: #477BFF;
+			align-content: center;
+			align-items: center;
+			justify-content: center;
+			width: 90%;
+			height: 360px;
+			top: 50%;
+			left: 50%;
+			position: absolute;
+			border-radius: 20px;
+			transform:translate(-50%, -50%);
+			flex-flow: column;
+
+		}
+		.exit-container{
+			display: none;
+			background: #477BFF;
+			align-content: center;
+			align-items: center;
+			justify-content: center;
+			width: 90%;
+			height: 360px;
+			border-radius: 20px;
+			top: 50%;
+			left: 50%;
+			position: absolute;
+			flex-flow: column;
+			transform:translate(-50%, -50%);
+		}
+		.button-settings{
+			display: flex;
+			background: white;
+			padding: 10px;
+			border-radius: 10px;
+			align-content: center;
+			align-items: center;
+			margin: 5px;
+			justify-content: center;
+			width: 270px;
+			height: 40px;
+			font-weight: bold;
+			font-family: arial;
+		}
+		.enter-button{
+			display: flex;
+			background: white;
+			padding: 15px;
+			border-radius: 10px;
+			align-content: center;
+			align-items: center;
+			margin: 5px;
+			justify-content: center;
+			width: 30px;
+			height: 30px;
+		}
+		.button-delete{
+			margin-top:40px;
+			background: red;
+			color: white;
+			display: flex;
+			padding: 10px;
+			border-radius: 10px;
+			align-content: center;
+			align-items: center;
+			margin: 10px;
+			justify-content: center;
+			font-weight: bold;
+			font-family: arial;
+			width: 270px;
+			height: 35px;
+		}
+		.change-title-container{
+			display: flex;
+			flex-wrap: nowrap;
+			flex-flow: row;
+		}
+		.name-file-input{
+			display: flex;
+			background: white;
+			border-radius: 10px;
+			width: 200px;
+			height: 40px;
+			padding: 10px;
+			font-size: 15px;
+			color:grey;
+			border: 0;
+			font-family: arial;
+			font-weight: bold;
+			margin: 5px;
+		}
+		.name-input{
+			display: flex;
+			background: white;
+			border-radius: 10px;
+			width: 180px;
+			height: 40px;
+			padding: 10px;
+			font-size: 15px;
+		}
+		.name-button{
+			font-family: arial;
+			letter-spacing: 2px;
+			font-weight: bold;
+			display: flex;
+			background: white;
+			color:#477BFF;
+			width: 200px;
+			height: 60px;
+			font-size: 15px;
+			margin: 20px;
+			border-radius: 10px;
+
+			align-content: center;
+			align-items: center;
+			justify-content: center;
+		}
+		.vertical-line{
+			display: flex;
+			background: white;
+			border-radius: 20px;
+			width: 7px;
+			height: 10px;
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+		.workzone{
+			display: flex;
+			margin: 0;
+			background: grey;
+			align-content: center;
+			align-items: center;
+			justify-content: center;
+			flex-flow: column;
+			padding: 10px;
+		}
+		.list{
+			display: flex;
+			margin: 10px;
+			width: 300px;
+			height: 400px;
+			background: white;
+		}
+	</style>
 </head>
 <body>
 <div class="block" id="main-block">
 	<div class="top-container">
 		<div class="title">NoteWorld</div>
 	</div>
-
 	<div class="main-button-container">
 		<div class="button">
-			<img class="button-img" src="img/addFile.png" onclick="show(2)">
+			<a href="create.html"><img class="button-img" src="img/addFile.png"></a>
 		</div>
 		<div class="button">
-			<img class="button-img" src="img/downloadFile.png" onclick="show(3)">
+			<a href="download.html"><img class="button-img" src="img/downloadFile.png"></a>
 		</div>
 		<div class="button">
-			<img class="button-img" src="img/uploadFile.png" onclick="uploadFile()">
+			<a href="upload.html"><img class="button-img" src="img/uploadFile.png"></a>
 		</div>
-
-
 	</div>
-
-	<div class = "line"></div>
-
-	<div class = "files-container" id = "files-container">
-
+	<div class="line"></div>
+	<div class="files-container" id="files-container">
+		<!-- Список файлов -->
 	</div>
 </div>
 
-
-
-<div class="block" id="select-block">
-	<div class="top-container">
-		<img class="button-img-back" src="img/back.png" onclick="show(0)">
-		<div class="title">NoteWorld</div>
-	</div>
-
-	<div class="files-container" id="files-container-select">
-	</div>
-</div>
-
-<div class="block" id="name-block">
-	<div class="top-container">
-		<img class="button-img-back" src="img/back.png" onclick="show(0)">
-		<div class="title">NoteWord</div>
-	</div>
-
-	<div class="name-container">
-		<input class="name-input" id="name-input" placeholder="Введите название">
-		<div class="name-button" onclick="createFile()">СОЗДАТЬ</div>
-	</div>
-</div>
-
-<div class="block" id="id-select-block">
-	<div class="top-container">
-		<img class="button-img-back" src="img/back.png" onclick="show(0)">
-		<div class="title">NoteWorld</div>
-	</div>
-
-	<div class="name-container">
-		<input class="name-input" id="id-input" placeholder="Введите ID">
-		<div class="name-button" onclick="downloadFile()">СКАЧАТЬ</div>
-	</div>
-</div>
-
-<div class="block" id="file-block">
+<div class="block" id="file-block" style="display: none;">
 	<div class="top-container">
 		<img class="button-img" src="img/back.png" onclick="saveWindow()">
 		<div class="vertical-line"></div>
@@ -80,7 +314,7 @@
 		<img class="button-img" src="img/settings.png" onclick="settings()">
 	</div>
 	<div class="exit-container" id="exit">
-		<div class="button-settings" onclick="save(true)">Сохранять</div>
+		<div class="button-settings" onclick="save(true)">Сохранить</div>
 		<div class="button-delete" onclick="save(false)">Не сохранять</div>
 	</div>
 	<div class="settings-container" id="settings">
@@ -96,6 +330,109 @@
 	</div>
 </div>
 
-<script src="js/kernel.js"></script>
+<script>
+	var files = [];           // Массив файлов
+    var title = "";           // Текущий заголовок файла (с расширением)
+    var isFileModified = false; // Флаг для отслеживания изменений в файле
+    var newTitle = "";        // Переменная для временного хранения нового названия файла
+    var data = null;          // Данные файла, которые могут быть изменены
+
+    // Загрузка списка файлов
+    function getFiles(files_temp) {
+        var file_container = document.getElementById("files-container");
+        var inner = "";
+        if (files_temp.length === 0) {
+            inner = '<div class="no-files">Нет файлов</div>';
+        } else {
+            for (var i = 0; i < files_temp.length; i++) {
+                inner += '<div class="file"><img class="file-img" src="img/file.png" onclick="openFile(\'' + files_temp[i] + '\')"><div class="file-title">' + files_temp[i] + '</div></div>';
+            }
+        }
+        file_container.innerHTML = inner;
+        files = files_temp;
+    }
+
+    // Открытие файла
+    function openFile(title_temp) {
+        title = title_temp;  // Получаем текущее полное название файла с расширением
+        isFileModified = false; // При открытии файла сбрасываем флаг изменений
+        newTitle = ""; // Сбрасываем новое имя файла
+        android.readFile(title); // Чтение файла через Android-интерфейс
+        document.getElementById("main-block").style.display = "none";
+        document.getElementById("file-block").style.display = "block";
+        hideSaveWindow(); // Скрываем окно сохранения на случай, если оно было показано
+    }
+
+    // Открыть или скрыть настройки
+    function settings() {
+        var settingsBlock = document.getElementById("settings");
+        settingsBlock.style.display = (settingsBlock.style.display === "flex") ? "none" : "flex";
+    }
+
+    // Функция для подтверждения изменения названия файла
+    function changeTitle() {
+        var new_title = document.getElementById("name-file-input").value;
+        if (new_title !== "") {
+            android.changeTitle(title, new_title);
+            title = new_title + ".nw";
+            // Отмечаем, что были внесены изменения
+            isFileModified = true;
+
+            // Закрываем окно настроек после изменения
+            settings();
+        }
+    }
+
+    // Удалить файл
+    function deleteFile() {
+        android.deleteFile(title); // Удаляем файл через Android-интерфейс
+        closeEditor(); // Закрываем редактор и обновляем список файлов
+    }
+
+    // Смена инструмента редактирования (например, карандаш, фигуры и т.д.)
+    function changeInstrument(id) {
+        isFileModified = true; // Любое действие в редакторе фиксируется как изменение
+    }
+
+    // Открыть окно с вопросом о сохранении (если были изменения)
+    function saveWindow() {
+        if (isFileModified) {
+            document.getElementById("exit").style.display = "flex"; // Показываем окно сохранения
+            document.getElementById("settings").style.display = "none"; // Скрываем настройки
+        } else {
+            closeEditor(); // Если изменений не было, просто закрываем редактор
+        }
+    }
+
+    // Функция сохранения файла
+    function save(param) {
+        if (param) {
+            android.writeFile(title, JSON.stringify(data));
+        }
+        document.getElementById("file-block").style.display = "none";
+        document.getElementById("main-block").style.display = "block";
+        android.getAllJsonFiles();  // Обновление списка файлов после сохранения
+        closeEditor();  // Закрываем редактор после сохранения или отмены
+    }
+
+    // Закрыть редактор и вернуться к списку файлов
+    function closeEditor() {
+        document.getElementById("file-block").style.display = "none"; // Закрыть блок редактора
+        document.getElementById("main-block").style.display = "block"; // Показать основной блок
+        android.getAllJsonFiles();  // Обновление списка файлов через Android-интерфейс
+        isFileModified = false; // Сбрасываем флаг изменений
+        newTitle = ""; // Сбрасываем новое имя файла
+        hideSaveWindow(); // Закрываем окно сохранения
+    }
+
+    // Скрыть окно с вопросом о сохранении
+    function hideSaveWindow() {
+        document.getElementById("exit").style.display = "none"; // Прячем окно сохранения
+    }
+
+    // Инициализация: загрузка списка файлов при открытии страницы
+    android.getAllJsonFiles();  // Чтение всех файлов через Android-интерфейс
+</script>
+
 </body>
 </html>

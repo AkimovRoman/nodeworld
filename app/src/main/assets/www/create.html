@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NoteWorld - Создать файл</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        html, body {margin: 0; height: 100%; overflow-x:hidden;}
+        @font-face {
+            font-family: 'main'; /*a name to be used later*/
+            src: url('fonts/InriaSans.ttf');
+        }
+        .block{
+            display:block;
+            width:100%;
+            height:100%;
+            overflow: hidden;
+        }
+        .top-container{
+            display: flex;
+            flex-wrap: nowrap;
+            background: #477BFF;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+        }
+        .title{
+            display: flex;
+            font-family: main;
+            font-size: 30px;
+            margin: 30px;
+            color:white;
+            letter-spacing: 6px;
+        }
+        .name-container{
+            display: flex;
+            flex-wrap: nowrap;
+            background: #477BFF;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+            width: 290px;
+            height: 350px;
+            margin: auto;
+            margin-top:120px;
+            border-radius: 15px;
+            flex-flow: column;
+        }
+        .name-input{
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            width: 180px;
+            height: 40px;
+            padding: 10px;
+            font-size: 15px;
+        }
+        .name-button{
+            font-family: arial;
+            letter-spacing: 2px;
+            font-weight: bold;
+            display: flex;
+            background: white;
+            color:#477BFF;
+            width: 200px;
+            height: 60px;
+            font-size: 15px;
+            margin: 20px;
+            border-radius: 10px;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+        }
+        .button-img-back{
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="block" id="name-block">
+    <div class="top-container">
+        <a href="index.html"><img class="button-img-back" src="img/back.png"></a>
+        <div class="title">NoteWorld</div>
+    </div>
+
+    <div class="name-container">
+        <input class="name-input" id="name-input" placeholder="Введите название">
+        <div class="name-button" onclick="createFile()">СОЗДАТЬ</div>
+    </div>
+</div>
+
+<script>
+    function createFile() {
+        var name = document.getElementById("name-input").value;
+        if (name !== "") {
+            android.createJsonFile(name);
+            window.location.href = "index.html";  // Возврат на главную страницу после создания
+        }
+    }
+</script>
+</body>
+</html>

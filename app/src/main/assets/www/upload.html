@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NoteWorld - Загрузить файл</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        html, body {margin: 0; height: 100%; overflow-x: hidden;}
+        @font-face {
+            font-family: 'main';
+            src: url('fonts/InriaSans.ttf');
+        }
+        .block{
+            display: block;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        .top-container{
+            display: flex;
+            flex-wrap: nowrap;
+            background: #477BFF;
+            align-content: center;
+            align-items: center;
+            justify-content: center;
+        }
+        .title{
+            display: flex;
+            font-family: main;
+            font-size: 30px;
+            margin: 30px;
+            color: white;
+            letter-spacing: 6px;
+        }
+        .files-container{
+            display: flex;
+            flex-flow: column;
+            margin: 30px 20px 0px 20px;
+            height: calc(100% - 120px); /* Заполнение пространства */
+            overflow-y: scroll;
+        }
+        .files-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        .files-container::-webkit-scrollbar-track {
+            background: white;
+        }
+        .files-container::-webkit-scrollbar-thumb {
+            background-color: #477BFF;
+            border-radius: 20px;
+        }
+        .file{
+            display: flex;
+            margin: 0px;
+            align-items: center;
+        }
+        .file-img{
+            width: 45px;
+            height: 45px;
+            margin: 15px;
+            border-radius: 15px;
+            background: #477BFF;
+            padding: 10px;
+            cursor: pointer;
+        }
+        .file-title{
+            display: flex;
+            font-family: arial;
+            font-size: 18px;
+            margin: 10px;
+            color: grey;
+            font-weight: bold;
+            letter-spacing: 5px;
+        }
+        .no-files{
+            display: flex;
+            font-family: arial;
+            font-size: 30px;
+            margin: 30px;
+            color: grey;
+            font-weight: bold;
+            letter-spacing: 5px;
+            text-align: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .button-img-back{
+            left: 10px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        /* Стили модального окна */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #477BFF;
+            border-radius: 15px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+            color: white;
+            font-family: main;
+        }
+        .modal-buttons {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .modal-button {
+            background-color: white;
+            color: #477BFF;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: main;
+        }
+    </style>
+</head>
+<body>
+<div class="block" id="main-block">
+    <div class="top-container">
+        <a href="index.html"><img class="button-img-back" src="img/back.png"></a>
+        <div class="title">NoteWorld</div>
+    </div>
+
+    <div class="files-container" id="files-container">
+        <!-- Список файлов для загрузки -->
+    </div>
+</div>
+
+<!-- Модальное окно подтверждения загрузки -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <p id="modal-message">Вы действительно хотите загрузить файл?</p>
+        <div class="modal-buttons">
+            <button class="modal-button" onclick="confirmUpload()">Да</button>
+            <button class="modal-button" onclick="closeModal()">Нет</button>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно результата -->
+<div id="result-modal" class="modal">
+    <div class="modal-content">
+        <p id="result-message"></p>
+        <div class="modal-buttons">
+            <button class="modal-button" onclick="closeResultModal()">ОК</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var selectedFile = "";  // Переменная для хранения выбранного файла
+
+    // Загрузка файлов
+    function getFiles(files_temp) {
+        var file_container = document.getElementById("files-container");
+        var inner = "";
+        if (files_temp.length === 0) {
+            inner = '<div class="no-files">Нет файлов</div>';
+        } else {
+            for (var i = 0; i < files_temp.length; i++) {
+                inner += '<div class="file"><img class="file-img" src="img/file.png" onclick="showModal(\'' + files_temp[i] + '\')"><div class="file-title">' + files_temp[i] + '</div></div>';
+            }
+        }
+        file_container.innerHTML = inner;
+    }
+
+    // Открытие модального окна для подтверждения загрузки
+    function showModal(fileName) {
+        selectedFile = fileName;
+        document.getElementById("modal-message").innerText = "Вы действительно хотите загрузить файл " + fileName + " на сервер?";
+        document.getElementById("modal").style.display = "flex";
+    }
+
+    // Закрытие модального окна
+    function closeModal() {
+        document.getElementById("modal").style.display = "none";
+    }
+
+    // Закрытие модального окна результата
+    function closeResultModal() {
+        document.getElementById("result-modal").style.display = "none";
+    }
+
+    // Подтверждение загрузки файла
+    async function confirmUpload() {
+        closeModal();  // Закрываем окно подтверждения
+
+        try {
+            // Чтение содержимого файла через Android-интерфейс
+            const fileData = android.readFile(selectedFile);
+
+            // Создаем FormData для отправки файла на сервер
+            const formData = new FormData();
+            const file = new Blob([fileData], { type: "application/json" });
+            formData.append("file", file, selectedFile);
+            formData.append("id", "");  // Пустое поле для id
+
+            console.log("Отправляем файл:", selectedFile);
+            console.log("Формируем запрос на сервер...");
+
+            const response = await fetch("https://arriving-glowworm-endlessly.ngrok-free.app/upload", {
+                method: "POST",
+                body: formData,
+                mode: 'cors',  // Принудительно просим сервер проверить CORS
+                credentials: 'omit'
+            });
+
+            if (response.ok) {
+                const id = await response.text();
+                document.getElementById("result-message").innerText = "Файл успешно отправлен, ваш идентификатор доступа: " + id;
+            } else {
+                const errorBody = await response.text();
+                document.getElementById("result-message").innerText = "При загрузке на сервер произошла ошибка, код ошибки: " + response.status + " " + response.statusText;
+                document.getElementById("result-message").innerText += "\nТело ошибки: " + errorBody;
+            }
+        } catch (error) {
+            document.getElementById("result-message").innerText = "При загрузке на сервер произошла ошибка: " + error.message + "\nТип ошибки: " + error.name;
+            console.error("Ошибка при отправке файла:", error);
+        }
+
+        document.getElementById("result-modal").style.display = "flex";  // Показываем результат
+    }
+
+    android.getAllJsonFiles();  // Загрузка списка файлов при открытии страницы
+</script>
+
+</body>
+</html>
