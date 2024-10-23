@@ -94,12 +94,12 @@ public class FileManager {
             String line = br.readLine();
             while (line != null) {
                 sb.append(line);
-                sb.append(System.lineSeparator());
                 line = br.readLine();
             }
+            final String fileContent = sb.toString();
 
-
-            webView.post(() -> webView.loadUrl("javascript:data = JSON.parse(" + sb.toString() + ");"));
+            // Отправляем данные файла обратно в WebView
+            webView.post(() -> webView.loadUrl("javascript:onFileLoaded('" + fileContent + "');"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         } finally {

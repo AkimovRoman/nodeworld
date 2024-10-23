@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>WebView Interaction</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>WebView Interaction</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style>
 		html, body {margin: 0; height: 100%; overflow-x:hidden;}
 		@font-face {
@@ -34,7 +35,6 @@
 		.main-button-container{
 			display: flex;
 			flex-wrap: nowrap;
-
 			justify-content: center;
 			margin: 30px;
 		}
@@ -325,8 +325,7 @@
 		<div class="button-delete" onclick="deleteFile()">Удалить файл</div>
 	</div>
 	<div class="workzone">
-		<canvas class="list"></canvas>
-		<canvas class="list"></canvas>
+		<canvas class="list" id="textCanvas" width="520" height="400"></canvas>
 	</div>
 </div>
 
@@ -335,7 +334,100 @@
     var title = "";           // Текущий заголовок файла (с расширением)
     var isFileModified = false; // Флаг для отслеживания изменений в файле
     var newTitle = "";        // Переменная для временного хранения нового названия файла
-    var data = null;          // Данные файла, которые могут быть изменены
+    var data = [];            // Данные файла, которые могут быть изменены (тексты и координаты)
+    let selectedTextIndex = null;  // Индекс редактируемого текста
+
+    const canvas = document.getElementById('textCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const textArea = {
+        x: 10,
+        y: 10,
+        width: 500,  // Расширили ширину
+        height: 380
+    }; // Определённая область для текста
+
+    let textContent = ""; // Весь текст
+    let cursorPosition = textContent.length;  // Позиция курсора
+    let inputActive = false;  // Флаг активности ввода
+    let cursorVisible = true;  // Видимость курсора
+    let lines = [];  // Массив строк текста
+
+	ctx.font = '18px Arial'; // Устанавливаем нормальный шрифт и размер
+	ctx.scale(1, 1);  // Масштабирование по обеим осям для предотвращения сжатия
+	ctx.textBaseline = 'top'; // Базовая линия текста
+
+    // Обновление canvas: текст и курсор
+    function renderCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeRect(textArea.x, textArea.y, textArea.width, textArea.height);  // Отрисовка текстовой области
+        let y = textArea.y + 10;  // Начальная позиция по Y
+
+        // Отрисовка текста построчно
+        lines.forEach(line => {
+            ctx.fillText(line, textArea.x + 5, y);
+            y += 20;
+        });
+
+        // Если курсор активен, отрисовываем его
+        if (inputActive && cursorVisible) {
+            const cursorX = textArea.x + 5 + ctx.measureText(lines[lines.length - 1] || "").width;
+            const cursorY = textArea.y + (lines.length - 1) * 20 + 10;
+            ctx.fillRect(cursorX, cursorY, 2, 18); // Отрисовка курсора
+        }
+    }
+
+    // Анимация мигания курсора
+    setInterval(() => {
+        if (inputActive) {
+            cursorVisible = !cursorVisible;
+            renderCanvas();
+        }
+    }, 500);
+
+    // Функция переноса текста на новую строку
+    function wrapText(text) {
+        lines = [];
+        const paragraphs = text.split('\n'); // Поддержка переносов строк
+        paragraphs.forEach(paragraph => {
+            let line = "";
+            for (let i = 0; i < paragraph.length; i++) {
+                line += paragraph[i];
+                const testWidth = ctx.measureText(line).width;
+                if (testWidth > textArea.width - 10) {
+                    lines.push(line);  // Принудительный перенос длинного слова
+                    line = "";  // Начинаем новую строку
+                }
+            }
+            if (line !== "") {
+                lines.push(line);  // Добавляем последнюю строку
+            }
+        });
+    }
+
+    // Обработка ввода текста
+    window.addEventListener('keydown', (e) => {
+        if (inputActive) {
+            if (e.key === "Backspace") {
+                textContent = textContent.slice(0, -1);  // Удаление последнего символа
+            } else if (e.key === "Enter") {
+                textContent += "\n";  // Добавляем перенос строки
+            } else if (e.key.length === 1) {  // Ввод обычных символов
+                textContent += e.key;
+            }
+
+            isFileModified = true;  // Указываем, что файл изменён
+            wrapText(textContent);  // Обновляем текстовые строки
+            renderCanvas();  // Перерисовываем canvas
+        }
+    });
+
+    // Обработка клика по canvas
+    canvas.addEventListener('click', () => {
+        inputActive = true;  // Активируем режим ввода
+        cursorPosition = textContent.length;  // Устанавливаем курсор в конец текста
+        renderCanvas();
+    });
 
     // Загрузка списка файлов
     function getFiles(files_temp) {
@@ -353,15 +445,15 @@
     }
 
     // Открытие файла
-    function openFile(title_temp) {
-        title = title_temp;  // Получаем текущее полное название файла с расширением
-        isFileModified = false; // При открытии файла сбрасываем флаг изменений
-        newTitle = ""; // Сбрасываем новое имя файла
-        android.readFile(title); // Чтение файла через Android-интерфейс
-        document.getElementById("main-block").style.display = "none";
-        document.getElementById("file-block").style.display = "block";
-        hideSaveWindow(); // Скрываем окно сохранения на случай, если оно было показано
-    }
+	function openFile(title_temp) {
+		title = title_temp;  // Получаем текущее полное название файла с расширением
+		isFileModified = false; // При открытии файла сбрасываем флаг изменений
+		newTitle = ""; // Сбрасываем новое имя файла
+		android.readFile(title); // Чтение файла через Android-интерфейс
+		document.getElementById("main-block").style.display = "none";
+		document.getElementById("file-block").style.display = "block";
+		hideSaveWindow(); // Скрываем окно сохранения на случай, если оно было показано
+	}
 
     // Открыть или скрыть настройки
     function settings() {
@@ -404,16 +496,21 @@
         }
     }
 
-    // Функция сохранения файла
-    function save(param) {
-        if (param) {
-            android.writeFile(title, JSON.stringify(data));
-        }
-        document.getElementById("file-block").style.display = "none";
+    // Сохраняет текст из Canvas в JSON-файл
+	function save(param) {
+		if (param) {
+			const jsonData = {
+				type: "nodeworldfile",
+				version: "1.0",
+				objects: lines  // Массив строк текста из Canvas
+			};
+			android.writeFile(title, JSON.stringify(jsonData));  // Сохраняем JSON-данные
+		}
+		document.getElementById("file-block").style.display = "none";
         document.getElementById("main-block").style.display = "block";
         android.getAllJsonFiles();  // Обновление списка файлов после сохранения
         closeEditor();  // Закрываем редактор после сохранения или отмены
-    }
+	}
 
     // Закрыть редактор и вернуться к списку файлов
     function closeEditor() {
@@ -424,6 +521,19 @@
         newTitle = ""; // Сбрасываем новое имя файла
         hideSaveWindow(); // Закрываем окно сохранения
     }
+
+	// Загружает содержимое файла и отображает его в Canvas
+	function onFileLoaded(fileContent) {
+		try {
+			console.log("Загружено содержимое файла:", fileContent); // Лог для проверки содержимого
+			const jsonData = JSON.parse(fileContent);  // Преобразуем содержимое JSON-файла в объект
+			textContent = jsonData.objects.join("\n"); // Предположим, что "objects" хранит строки текста
+			wrapText(textContent);  // Обрабатываем текст для переноса строк
+			renderCanvas();  // Отображаем текст в Canvas
+		} catch (e) {
+			console.error("Ошибка при чтении файла:", e);
+		}
+	}
 
     // Скрыть окно с вопросом о сохранении
     function hideSaveWindow() {
