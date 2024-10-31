@@ -92,45 +92,37 @@
 </div>
 
 <script>
-    async function downloadFile() {
-        var id = document.getElementById("id-input").value;
-        if (id !== "") {
-            try {
-                const response = await fetch("https://arriving-glowworm-endlessly.ngrok-free.app/download/" + id, {
-                    method: "GET"
-                });
-
-                if (response.ok) {
-                    const disposition = response.headers.get("Content-Disposition");
-                    let fileName = id + ".nw";
-
-                    if (disposition && disposition.indexOf("filename=") !== -1) {
-                        const matches = disposition.match(/filename="([^"]+)"/);
-                        if (matches && matches[1]) {
-                            fileName = matches[1];
-                        }
-                    }
-
-                    console.log("Имя файла для сохранения:", fileName);
-
-                    const blob = await response.blob();
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        const fileData = event.target.result;
-                        android.saveDownloadedFile(fileName, fileData);
-                    };
-                    reader.readAsText(blob);
-
-                    alert("Файл загружен: " + fileName);
-                } else {
-                    const errorText = await response.text();
-                    alert("Ошибка загрузки: " + response.status + " " + response.statusText + "\n" + errorText);
-                }
-            } catch (error) {
-                alert("Ошибка скачивания: " + error.message);
+function HttpRequestPost(URL, Func, data) {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                if (xhr.responseText == "error_by_connection" || xhr.responseText == "error_by_link" || xhr.responseText == "bad_login") window.location.href = '/login'
+                else Func(JSON.parse(xhr.responseText))
+            } else {
+                alert('ERROR BY "' + URL + '":' + xhr.responseText);
+                return ''
             }
         }
+    };
+    xhr.open('POST', "https://arriving-glowworm-endlessly.ngrok-free.app/" + URL, true);
+
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(data));
+}
+
+function downloadFile() {
+    var id = document.getElementById("id-input").value;
+    var json = {
     }
+    if (id !== "") {
+        HttpRequestPost("download/" + id, function(request){
+            var datas = request.JsonFile
+            if(datas == "undefined") datas = ""
+            android.saveDownloadedFile(request.name, datas);
+        }, json)
+    }
+}
 </script>
 
 </body>
