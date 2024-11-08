@@ -4,11 +4,18 @@ import android.content.Context;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
-import java.io.BufferedReader;
+import org.json.JSONException;
+import android.util.Base64;
+
+import org.json.JSONObject;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -200,4 +207,31 @@ public class FileManager {
             e.printStackTrace();
         }
     }
+
+
+
+
+
+
+    @JavascriptInterface
+    public void getFile(String fileName) throws IOException {
+        File notesDir = getNotesDirectory();
+        File file = new File(notesDir, fileName);
+
+        // Чтение файла в байтовый массив
+        byte[] fileBytes = new byte[(int) file.length()];
+        FileInputStream fis = new FileInputStream(file);
+        fis.read(fileBytes);
+        fis.close();
+
+        // Преобразование байтового массива в строку Base64
+        String encodedFile = Base64.encodeToString(fileBytes, Base64.DEFAULT);
+
+        // Передача закодированного файла в JavaScript
+        webView.post(() -> {
+                webView.loadUrl("javascript:confirmUpload('" + encodedFile + "');");
+        });
+    }
+
+
 }
