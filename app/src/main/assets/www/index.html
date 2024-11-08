@@ -360,6 +360,7 @@
 		textContent += e.data || '';  // Добавляем введенный символ
 		isFileModified = true;
 		wrapText(textContent);
+		hiddenInput.value = ""
 		renderCanvas();
 	});
 

@@ -305,7 +305,6 @@
             const fullId = idMatch[1];
             navigator.clipboard.writeText(fullId)
                 .then(() => {
-                    alert("ID скопирован в буфер обмена!");
                 })
                 .catch(err => {
                     console.error("Не удалось скопировать ID:", err);
