@@ -198,7 +198,45 @@
     // Подтверждение загрузки файла
     function confirmUpload2() {
         closeModal();  // Закрываем окно подтверждения
-        android.getFile(selectedFile);
+
+        const byteCharacters = atob(encodedFile);
+        const byteNumbers = Array.from(byteCharacters).map(c => c.charCodeAt(0));
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: "application/octet-stream" });
+        const file = new File([blob], selectedFile, { type: "application/octet-stream" });
+
+
+
+        const formData = new FormData()
+        var jsonData = ""
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            jsonStr = reader.result
+            jsonData = JSON.parse(jsonStr);
+            formData.append("id", jsonData.id)
+        }
+        reader.onerror = (error) => { console.error("Ошибка при чтении файла:", error) }
+        reader.readAsText(file)
+
+        const response = await fetch("https://arriving-glowworm-endlessly.ngrok-free.app/checkId", {
+            method: "POST",
+            body: formData,
+            mode: 'cors',  // Принудительно просим сервер проверить CORS
+            credentials: 'omit'
+        });
+
+        if (response.ok) {
+                jsonData.id = await response.text()
+                android.writeFile(selectedFile, JSON.stringify(jsonData));
+                android.getFile(selectedFile);
+
+                document.getElementById("result-message").innerText = "Файл успешно отправлен, ваш идентификатор доступа: " + id;
+            } else {
+                const errorBody = await response.text();
+                document.getElementById("result-message").innerText = "При загрузке на сервер произошла ошибка, код ошибки: " + response.status + " " + response.statusText;
+                document.getElementById("result-message").innerText += "\nТело ошибки: " + errorBody;
+            }
     }
 
 
@@ -210,11 +248,10 @@
             const blob = new Blob([byteArray], { type: "application/octet-stream" });
             const file = new File([blob], selectedFile, { type: "application/octet-stream" });
 
-
             const formData = new FormData()
             formData.append("file", file)
             formData.append("title", selectedFile)
-
+            
             const reader = new FileReader();
             reader.onload = () => {
                 jsonStr = reader.result
@@ -233,18 +270,6 @@
 
             if (response.ok) {
                 const id = await response.text();
-
-                const reader = new FileReader();
-                reader.onload = () => {
-                    jsonStr = reader.result
-                    const jsonData = JSON.parse(jsonStr)
-                    jsonData.id = id
-
-                    android.writeFile(selectedFile, JSON.stringify(jsonData));
-                }
-                reader.onerror = (error) => { console.error("Ошибка при чтении файла:", error) }
-                reader.readAsText(file)
-
                 document.getElementById("result-message").innerText = "Файл успешно отправлен, ваш идентификатор доступа: " + id;
             } else {
                 const errorBody = await response.text();
