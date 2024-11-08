@@ -111,15 +111,21 @@ function HttpRequestPost(URL, Func, data) {
     xhr.send(JSON.stringify(data));
 }
 
+
 function downloadFile() {
-    var id = document.getElementById("id-input").value;
+    var id = "65919d7d-fe5c-4e1d-8e10-8604404e499b";
     var json = {
     }
-    if (id !== "") {
-        HttpRequestPost("download/" + id, function(request){
-            var datas = request.JsonFile
-            if(datas == "undefined") datas = ""
-            android.saveDownloadedFile(request.name, datas);
+    if (id != "") {
+        var name = ""
+        HttpRequestPost("downloadName/" + id, function(request){
+            name = request
+            HttpRequestPost("download/" + id, function(request){
+                var datas = request.JsonFile
+                if(datas == "undefined") datas = ""
+                alert()
+                android.saveDownloadedFile(name, datas);
+            }, json)
         }, json)
     }
 }
