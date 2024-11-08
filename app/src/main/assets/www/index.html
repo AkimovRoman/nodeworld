@@ -336,7 +336,7 @@
     var newTitle = "";        // Переменная для временного хранения нового названия файла
     var data = [];            // Данные файла, которые могут быть изменены (тексты и координаты)
     let selectedTextIndex = null;  // Индекс редактируемого текста
-
+ 	var id_file = ""
     const canvas = document.getElementById('textCanvas');
     const ctx = canvas.getContext('2d');
 
@@ -501,7 +501,7 @@
 		if (param) {
 			const jsonData = {
 				type: "nodeworldfile",
-				id: "",
+				id: id_file,
 				version: "1.0",
 				objects: lines  // Массив строк текста из Canvas
 			};
@@ -529,6 +529,7 @@
 			console.log("Загружено содержимое файла:", fileContent); // Лог для проверки содержимого
 			const jsonData = JSON.parse(fileContent);  // Преобразуем содержимое JSON-файла в объект
 			textContent = jsonData.objects.join("\n"); // Предположим, что "objects" хранит строки текста
+			id_file = jsonData.id
 			wrapText(textContent);  // Обрабатываем текст для переноса строк
 			renderCanvas();  // Отображаем текст в Canvas
 		} catch (e) {
