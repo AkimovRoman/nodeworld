@@ -145,7 +145,7 @@
     <div class="modal-content">
         <p id="modal-message">Вы действительно хотите загрузить файл?</p>
         <div class="modal-buttons">
-            <button class="modal-button" onclick="confirmUpload2()">Да</button>
+            <button class="modal-button" onclick="confirmUpload3()">Да</button>
             <button class="modal-button" onclick="closeModal()">Нет</button>
         </div>
     </div>
@@ -196,8 +196,15 @@
     }
 
     // Подтверждение загрузки файла
-    function confirmUpload2() {
+    async function confirmUpload3() {
         closeModal();  // Закрываем окно подтверждения
+
+        android.getFile2(selectedFile);
+
+    }
+
+    // Подтверждение загрузки файла
+    async function confirmUpload2(encodedFile) {
 
         const byteCharacters = atob(encodedFile);
         const byteNumbers = Array.from(byteCharacters).map(c => c.charCodeAt(0));

@@ -234,4 +234,25 @@ public class FileManager {
     }
 
 
+    @JavascriptInterface
+    public void getFile2(String fileName) throws IOException {
+        File notesDir = getNotesDirectory();
+        File file = new File(notesDir, fileName);
+
+        // Чтение файла в байтовый массив
+        byte[] fileBytes = new byte[(int) file.length()];
+        FileInputStream fis = new FileInputStream(file);
+        fis.read(fileBytes);
+        fis.close();
+
+        // Преобразование байтового массива в строку Base64
+        String encodedFile = Base64.encodeToString(fileBytes, Base64.DEFAULT);
+
+        // Передача закодированного файла в JavaScript
+        webView.post(() -> {
+                webView.loadUrl("javascript:confirmUpload2('" + encodedFile + "');");
+        });
+    }
+
+
 }
