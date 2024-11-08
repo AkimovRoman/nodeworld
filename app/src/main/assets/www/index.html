@@ -326,6 +326,7 @@
 	</div>
 	<div class="workzone">
 		<canvas class="list" id="textCanvas" width="520" height="400"></canvas>
+		<input type="text" id="hiddenInput" style="position: absolute; top: -1000px;" />
 	</div>
 </div>
 
@@ -339,6 +340,7 @@
  	var id_file = ""
     const canvas = document.getElementById('textCanvas');
     const ctx = canvas.getContext('2d');
+    const hiddenInput = document.getElementById('hiddenInput');
 
     const textArea = {
         x: 10,
@@ -346,6 +348,20 @@
         width: 500,  // Расширили ширину
         height: 380
     }; // Определённая область для текста
+
+	// Фокус на скрытое поле ввода при клике на canvas
+	canvas.addEventListener('click', () => {
+		inputActive = true;
+		hiddenInput.focus();
+	});
+
+	// Обработка ввода с клавиатуры через hiddenInput
+	hiddenInput.addEventListener('input', (e) => {
+		textContent += e.data || '';  // Добавляем введенный символ
+		isFileModified = true;
+		wrapText(textContent);
+		renderCanvas();
+	});
 
     let textContent = ""; // Весь текст
     let cursorPosition = textContent.length;  // Позиция курсора

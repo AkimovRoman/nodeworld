@@ -156,6 +156,7 @@
     <div class="modal-content">
         <p id="result-message"></p>
         <div class="modal-buttons">
+            <button class="modal-button" onclick="copyToClipboard()">Скопировать</button>
             <button class="modal-button" onclick="closeResultModal()">ОК</button>
         </div>
     </div>
@@ -293,6 +294,25 @@
         }
 
         document.getElementById("result-modal").style.display = "flex";  // Показываем результат
+    }
+
+    // Функция для копирования ID в буфер обмена
+    function copyToClipboard() {
+        const resultMessage = document.getElementById("result-message").innerText;
+        const idMatch = resultMessage.match(/идентификатор доступа: ([a-f0-9-]+)/i);
+
+        if (idMatch && idMatch[1]) {
+            const fullId = idMatch[1];
+            navigator.clipboard.writeText(fullId)
+                .then(() => {
+                    alert("ID скопирован в буфер обмена!");
+                })
+                .catch(err => {
+                    console.error("Не удалось скопировать ID:", err);
+                });
+        } else {
+            console.error("ID не найден в сообщении.");
+        }
     }
 
     android.getAllJsonFiles();  // Загрузка списка файлов при открытии страницы
