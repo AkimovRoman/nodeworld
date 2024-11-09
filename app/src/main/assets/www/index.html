@@ -349,7 +349,7 @@
     function getFiles(files_temp) {
         var file_container = document.getElementById("files-container");
         var inner = "";
-        if (files_temp.length === 0) {
+        if (files_temp.length == 0) {
             inner = '<div class="no-files">Нет файлов</div>';
         } else {
             for (var i = 0; i < files_temp.length; i++) {
@@ -415,6 +415,7 @@
     // Сохраняет текст из area в JSON-файл
 	function save(param) {
 		if (param) {
+
 			const jsonData = {
 				type: "nodeworldfile",
 				id: id_file,
@@ -422,7 +423,6 @@
 				objects: lines  // Массив строк текста из area
 			};
 
-			alert(lines)
 			android.writeFile(title, JSON.stringify(jsonData));  // Сохраняем JSON-данные
 		}
 		document.getElementById("file-block").style.display = "none";
@@ -449,41 +449,43 @@
 	// Загружает содержимое файла и отображает его в area
 	function onFileLoaded(fileContent) {
 		try {
-			alert(fileContent)
-			const jsonData = JSON.parse(fileContent);  // Преобразуем содержимое JSON-файла в объект
-			alert(jsonData.objects)
-			textContent = jsonData.objects
-			id_file = jsonData.id
+			const jsonData = JSON.parse(fileContent); // Преобразуем содержимое JSON-файла в объект
 
-			alert(textContent)
+			let textContent = jsonData.objects; // Извлекаем массив строк из JSON для отображения
+			let id_file = jsonData.id;
 
-			var workzone = document.getElementById("workzone")
-			var counts = 0
-			textContent = []
-			if(textContent.length == 0){
-				 counts = 1
-				 textContent[0] = ""
-			}else counts = textContent.length
 
-			for(var i = 0; i < counts; i++){
-				(function(index) {
-					var el = document.createElement("textarea");
-					el.value = textContent[index];
-					el.classList.add("list");
-					el.style.width = "320px";
-					el.style.height = "400px";
-					el.addEventListener('input', function() {
-						isFileModified = true;
-						lines[index] = el.value; // Используем index вместо i
-					}, false);
+			// Получаем элемент workzone и очищаем его содержимое
+			let workzone = document.getElementById("workzone");
+			workzone.innerHTML = ''; // Очищаем перед добавлением новых элементов
 
-					workzone.appendChild(el);
-				})(i); // Передаем текущее значение i в замыкание
+			// Проверяем, есть ли содержимое в textContent, иначе создаем пустое поле
+			if (textContent.length == 0) {
+				textContent = [""];
 			}
+
+			// Создаем и добавляем каждый textarea для каждого элемента в textContent
+			textContent.forEach((content, index) => {
+				let el = document.createElement("textarea");
+				el.value = content.replace(/\\n/g, '\n'); // Устанавливаем значение из textContent в textarea
+				el.classList.add("list");
+				el.style.width = "320px";
+				el.style.height = "400px";
+
+				// Обработчик для отслеживания изменений в textarea
+				el.addEventListener('input', function () {
+					isFileModified = true;
+					lines[index] =  el.value.replace(/\n/g, '\\n'); // Обновляем textContent с изменениями
+				});
+
+				// Добавляем textarea в workzone
+				workzone.appendChild(el);
+			});
 		} catch (e) {
 			console.error("Ошибка при чтении файла:", e);
 		}
 	}
+
 
     // Скрыть окно с вопросом о сохранении
     function hideSaveWindow() {
